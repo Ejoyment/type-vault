@@ -1,0 +1,22 @@
+"1.0.0",
+  "description": "CLI tool for scaffolding Zero-Trust compliant microservices",
+  "bin": {
+    "codex-scaffold": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/cli.js"
+  },
+  "keywords": ["cli", "scaffold", "microservice", "codex"],
+  "dependencies": {
+    "commander": "^11.1.0",
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/inquirer": "^8.2.10",
+    "typescript": "^5.3.0"
+  }
+}
