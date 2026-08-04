@@ -14,11 +14,12 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci
 
 COPY tsconfig.json ./
 COPY src ./src
 RUN npm run build
+RUN npm prune --production
 
 # Production image - minimal and non-root
 FROM node:20-alpine

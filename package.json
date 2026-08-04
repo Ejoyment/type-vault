@@ -1,4 +1,6 @@
-"1.0.0",
+{
+  "name": "@codex-inc/service-scaffold",
+  "version": "1.0.0",
   "description": "CLI tool for scaffolding Zero-Trust compliant microservices",
   "bin": {
     "codex-scaffold": "./dist/cli.js"

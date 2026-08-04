@@ -1,44 +1,29 @@
 # CODEX INC Service Scaffolder
 
-CLI tool for rapidly bootstrapping Zero-Trust compliant microservices.
+CLI tool for bootstrapping TypeScript/Express microservices with security-conscious defaults.
 
-## Installation
+## Status
 
-```bash
-npm install -g @codex-inc/service-scaffold
-```
-
-## Usage
+Working local CLI — not yet published to npm.
 
 ```bash
-codex-scaffold new
+git clone https://github.com/Ejoyment/type-vault.git
+cd type-vault
+npm install
+npm run build
+node dist/cli.js new --service-name my-service --service-type api --port 3000
 ```
-
-Follow the interactive prompts to configure your service.
 
 ## What Gets Generated
 
-- TypeScript boilerplate with Express.js
-- Zero-Trust security middleware (Helmet, rate limiting)
-- Multi-stage Dockerfile (non-root user, minimal image)
-- Docker Compose for local development
-- Kubernetes manifests (Deployment, Service, NetworkPolicy, PodSecurityPolicy)
-- Health check endpoints
+- TypeScript/Express boilerplate (`src/index.ts`, `package.json`, `tsconfig.json`, `.env.example`)
+- Multi-stage Dockerfile (non-root user, minimal image) + `docker-compose.yml`
+- Kubernetes manifests: Deployment, Service, NetworkPolicy [+ whatever you land on for pod security]
+- Security middleware (Helmet, rate limiting)
 
-## Zero-Trust Security Features
+## Security-conscious defaults
 
 - Non-root container execution
-- Read-only root filesystem
-- Dropped Linux capabilities
 - Network policies (default deny)
 - Security headers (CSP, HSTS)
 - Rate limiting
-- Minimal attack surface
-
-## Development
-
-```bash
-npm install
-npm run build
-npm start
-```

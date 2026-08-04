@@ -16,6 +16,7 @@ export function generateK8sManifests(serviceDir: string, config: ServiceConfig):
 kind: Deployment
 metadata:
   name: ${config.serviceName}
+  namespace: ${config.serviceName}
   labels:
     app: ${config.serviceName}
     type: ${config.serviceType}
@@ -79,6 +80,7 @@ spec:
 kind: Service
 metadata:
   name: ${config.serviceName}
+  namespace: ${config.serviceName}
   labels:
     app: ${config.serviceName}
 spec:
@@ -97,6 +99,7 @@ spec:
 kind: NetworkPolicy
 metadata:
   name: ${config.serviceName}-netpol
+  namespace: ${config.serviceName}
 spec:
   podSelector:
     matchLabels:
@@ -125,28 +128,15 @@ spec:
 `;
   fs.writeFileSync(path.join(k8sDir, 'network-policy.yaml'), networkPolicy);
 
-  // PodSecurityPolicy
-  const psp = `apiVersion: policy/v1beta1
-kind: PodSecurityPolicy
+  // Namespace with Pod Security Admission labels for restricted policy enforcement
+  const namespaceManifest = `apiVersion: v1
+kind: Namespace
 metadata:
-  name: ${config.serviceName}-psp
-spec:
-  privileged: false
-  allowPrivilegeEscalation: false
-  requiredDropCapabilities:
-  - ALL
-  volumes:
-  - 'configMap'
-  - 'emptyDir'
-  - 'projected'
-  - 'secret'
-  runAsUser:
-    rule: 'MustRunAsNonRoot'
-  seLinux:
-    rule: 'RunAsAny'
-  fsGroup:
-    rule: 'RunAsAny'
-  readOnlyRootFilesystem: true
+  name: ${config.serviceName}
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.27
+    pod-security.kubernetes.io/warn: restricted
 `;
-  fs.writeFileSync(path.join(k8sDir, 'pod-security-policy.yaml'), psp);
+  fs.writeFileSync(path.join(k8sDir, 'namespace.yaml'), namespaceManifest);
 }
